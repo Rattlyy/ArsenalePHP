@@ -3,7 +3,7 @@ Piccolo progetto che ho realizzato per un compito scolastico.
 
 Tutti i file in "public/scuola" sono commentati, il sito è una pagina informativa per l'Arsenale di Taranto, contenente la storia e una descrizione.
 
-Ho scritto un sistema modulare per caricare le pagine richieste, usando un singolo file php con un router che importa poi codice PHP da altri file in base al parametro query "pagina" per evitare di ripetere il codice base per layout e footer.
+Ho scritto un sistema modulare per caricare le pagine richieste, usando un singolo file php con un router che importa poi codice PHP da altri file in base al parametro query "pagina" per evitare di ripetere il codice base per layout e footer. Simile al sistema Kernel di Laravel, ma molto piu semplificato (Per un piccolo progetto tutto l'overhead di Laravel è inutile).
 
 ## Stack
 - [Caddy](https://caddyserver.com/): Reverse Proxy + PHP (FastCGI) + SSL impostato in automatico, inoltre si configura molto piu semplicemente di altre alternative (NGINX, Apache).
