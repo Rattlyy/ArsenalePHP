@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  caddy:
+    image: caddy:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    depends_on:
+      - php
+    volumes:
+      - ./public:/srv
+      - ./config/adminer/adminer.css:/srv/adminer.css:ro
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./logs:/var/log/caddy
+      - caddy:/data
+
+  php:
+    image: sparanoid/php-fpm:8-latest
+    restart: always
+    depends_on:
+      - redis
+      - mariadb
+    volumes:
+      - ./public:/srv
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini:rw
+    environment:
+      - NOME=${NOME}
+      - MYSQL_ROOT_PASSWORD=ciao
+      - MYSQL_DATABASE=db
+
+  mariadb:
+    image: mariadb
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ciao
+      - MYSQL_DATABASE=MYSQL_DATABASE
+
+  redis:
+    image: redis
+    restart: always
+
+  adminer:
+    image: adminer
+    restart: always
+    links:
+      - "mariadb:db"
+    volumes:
+      - ./config/adminer/adminer.css:/var/www/html/adminer.css:ro
+    ports:
+      - 127.0.0.1:8080:8080
+    depends_on:
+      - php
+    environment:
+      - ADMINER_ABSOLUTE_URI=https://localhost/pma
+
+volumes:
+  db:
+  caddy:
